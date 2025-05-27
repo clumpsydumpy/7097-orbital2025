@@ -1,29 +1,31 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from 'react';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
-    const [name, setName] = useState('');
+    const [userId, setUserId] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        axios.post('http://localhost:3001/register', { name, password })
+        axios.post('http://localhost:3001/register', { userId, password })
             .then(result => {
                 console.log(result);
                 if (result.data === "Already registered") {
-                    alert("Username already registered! Please proceed to Login.");
+                    alert("Username already registered! Directing to login.");
                     navigate('/login');
                 } else {
-                    alert("Registered successfully! Please Login to proceed.");
+                    alert("Registered successfully! Directing to login.");
                     navigate('/login');
                 }
             })
-            .catch(err => console.log(err));
+            .catch(err => {
+                console.error("Register error:", err);
+                alert("Registration failed. Check console for details.");
+            });
     };
 
     return (
@@ -33,28 +35,28 @@ const Register = () => {
                     <h2 className='mb-3 text-primary'>Register</h2>
                     <form onSubmit={handleSubmit}>
                         <div className="mb-3 text-start">
-                            <label htmlFor="exampleInputName1" className="form-label">
+                            <label htmlFor="inputUserId" className="form-label">
                                 <strong>User ID</strong>
                             </label>
                             <input
                                 type="text"
                                 placeholder="Set User ID"
                                 className="form-control"
-                                id="exampleInputName1"
-                                onChange={(event) => setName(event.target.value)}
+                                id="inputUserId"
+                                onChange={(e) => setUserId(e.target.value)}
                                 required
                             />
                         </div>
                         <div className="mb-3 text-start">
-                            <label htmlFor="exampleInputPassword1" className="form-label">
+                            <label htmlFor="inputPassword" className="form-label">
                                 <strong>Password</strong>
                             </label>
                             <input
                                 type="password"
                                 placeholder="Enter Password"
                                 className="form-control"
-                                id="exampleInputPassword1"
-                                onChange={(event) => setPassword(event.target.value)}
+                                id="inputPassword"
+                                onChange={(e) => setPassword(e.target.value)}
                                 required
                             />
                         </div>

@@ -16,12 +16,12 @@ const Login = () => {
                 console.log(result);
                 if (result.data === "Success") {
                     alert('Login successful!');
-                    navigate('/home');
+                    navigate('/admin');
                 } else {
                     alert('Incorrect User ID or Password! Please try again.');
                 }
             })
-            .catch(err => console.log(err));
+            .catch(err => console.log("Login error:", err));
     };
 
     return (
