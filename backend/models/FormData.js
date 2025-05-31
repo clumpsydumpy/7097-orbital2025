@@ -1,9 +1,13 @@
 const mongoose = require('mongoose');
 
 const FormDataSchema = new mongoose.Schema({
-    userId: { type: String, required: true, unique: true },
-    password: { type: String, required: true }
-});
+    _id: {
+        type: String,
+        default: 'singleton'
+    },
+    userId: String,
+    password: String
+}, { _id: false }); // Prevent MongoDB from generating its own _id
 
 const FormDataModel = mongoose.model('registration_form', FormDataSchema);
 

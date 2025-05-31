@@ -5,7 +5,8 @@ const Home = () => {
     <div className="d-flex flex-column justify-content-center align-items-center text-center vh-100">
         <h1> Our Products </h1>
 
-        <div className="d-flex flex-wrap p-3" style={{ gap: '16px' }}>          <img src="/rose.png" alt="Rose Bouquet" style={{ width: '300px', height: 'auto' }} />
+        <div className="d-flex flex-wrap p-3" style={{ gap: '16px' }}>          
+          <img src="/rose.png" alt="Rose Bouquet" style={{ width: '300px', height: 'auto' }} />
           <img src="/sunflower.png" alt="Sunflower Bouquet" style={{ width: '300px', height: 'auto' }} />
         </div>
 

@@ -14,6 +14,7 @@ mongoose.connect(
 .then(() => console.log("MongoDB connected"))
 .catch(err => console.error("MongoDB connection error:", err));
 
+/*
 app.post('/register', (req, res) => {
     const { userId, password } = req.body;
 
@@ -22,7 +23,7 @@ app.post('/register', (req, res) => {
             if (user) {
                 res.json("Already registered");
             } else {
-                FormDataModel.create({ userId, password })
+                    FormDataModel.create({ _id: 'singleton', userId, password })
                     .then(newUser => res.json(newUser))
                     .catch(err => {
                         console.error("Error creating user:", err);
@@ -34,6 +35,23 @@ app.post('/register', (req, res) => {
             console.error("Error finding user:", err);
             res.status(500).json("Server error");
         });
+});
+*/
+
+app.post('/register', async (req, res) => {
+    const { userId, password } = req.body;
+
+    try {
+        const existingUser = await FormDataModel.findOne();
+        if (existingUser) {
+            return res.status(403).json("Registration closed: only one user allowed.");
+        }
+        const newUser = await FormDataModel.create({ _id: 'singleton', userId, password });
+        res.json(newUser);
+    } catch (err) {
+        console.error("Registration error:", err);
+        res.status(500).json("Server error during registration.");
+    }
 });
 
 app.post('/login', (req, res) => {
