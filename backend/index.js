@@ -1,15 +1,18 @@
+require('dotenv').config();
+
 const cors = require('cors');
 const express = require('express');
 const mongoose = require('mongoose');
 const FormDataModel = require('./models/Formdata');
-require('dotenv').config();
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
+const dbURL = process.env.MONGO_URI;
+
 mongoose.connect(
-    project.env.MONGO_URI,
+    dbURL,
     { useNewUrlParser: true, useUnifiedTopology: true }
 )
 .then(() => console.log("MongoDB connected"))
