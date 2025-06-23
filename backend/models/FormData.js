@@ -7,7 +7,7 @@ const FormDataSchema = new mongoose.Schema({
     },
     userId: String,
     password: String
-}, { _id: false }); // Prevent MongoDB from generating its own _id
+}, { _id: false }); // Stop MongoDB from generating its own _id
 
 const FormDataModel = mongoose.model('registration_form', FormDataSchema);
 

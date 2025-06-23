@@ -56,10 +56,12 @@ const Login = () => {
                                 required
                             />
                         </div>
-                        <button type="submit" className="btn btn-primary">Login</button>
+                        <button type="submit" className="btn btn-success">Login</button>
                     </form>
                     <p className='container my-2'>Don't have an account?</p>
-                    <Link to='/register' className="btn btn-secondary">Register</Link>
+                    <Link to='/register' className="btn btn-primary">Register</Link>
+                    <Link to='/home' className="btn btn-secondary">Back</Link>
+
                 </div>
             </div>
         </div>

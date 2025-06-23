@@ -14,14 +14,10 @@ const Register = () => {
         axios.post('http://localhost:3001/register', { userId, password })
             .then(result => {
                 console.log(result);
-                if (result.data === "Already registered") {
-                    alert("Username already registered! Directing to login.");
-                    navigate('/login');
-                } else {
-                    alert("Registered successfully! Directing to login.");
-                    navigate('/login');
+                alert("Registered successfully! Directing to login.");
+                navigate('/login');
                 }
-            })
+            )
             .catch(err => {
                 if (err.response.status === 403) {
                     console.warn("Server says registration is closed.");
@@ -66,11 +62,13 @@ const Register = () => {
                                 required
                             />
                         </div>
-                        <button type="submit" className="btn btn-primary">Register</button>
+                        <button type="submit" className="btn btn-success">Register</button>
                     </form>
 
                     <p className='container my-2'>Already have an account?</p>
-                    <Link to='/login' className="btn btn-secondary">Login</Link>
+                    <Link to='/login' className="btn btn-primary">Login</Link>
+                    <Link to='/home' className="btn btn-secondary">Back</Link>
+
                 </div>
             </div>
         </div>

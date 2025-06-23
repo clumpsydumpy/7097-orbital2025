@@ -10,7 +10,7 @@ export default function Header() {
         textAlign: 'center',
         position: 'fixed',
         width: '100%',
-        height: '120px',
+        height: '100px',
         top: '0',
         left: '0',
         right: '0',
