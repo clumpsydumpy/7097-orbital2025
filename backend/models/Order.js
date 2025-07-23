@@ -43,8 +43,26 @@ const OrderSchema = new mongoose.Schema({
     },
     orderStatus: { 
         type: String,
-        enum: ['Order Received', 'Prepared', 'On Its Way', 'Delivered', 'Cancelled'],
-        default: 'Order Received'
+        enum: ['Order Received', 'Prepared', 'On Its Way', 'Delivered', 'Cancelled', 'Payment Pending', 'Payment Failed'],
+        default: 'Payment Pending' // Initial status = pending payment
+    },
+    paymentTransactionId: { // for Stripe Session ID
+        type: String,
+        unique: true,
+        sparse: true
+    },
+    paymentStatus: { 
+        type: String,
+        enum: ['pending', 'waiting_payment', 'paid', 'failed', 'refunded'],
+        default: 'pending'
+    },
+    requiredDate: { // date the customer wants the order delivered
+        type: Date,
+        required: true
+    },
+    isImmediate: { // flag to indicate if is immediate order
+        type: Boolean,
+        default: true
     }
 });
 
