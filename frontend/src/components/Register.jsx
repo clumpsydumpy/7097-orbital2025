@@ -19,11 +19,12 @@ const Register = () => {
                 }
             )
             .catch(err => {
-                if (err.response.status === 403) {
+                if (err.response.status === 409) {
                     console.warn("Server says registration is closed.");
                     alert("Registered owner found. Only owner can register. Directing to login.");
                     navigate('/login');
-                } else {
+                } 
+                else {
                     console.error("Register error:", err);
                     alert("Registration failed. Check console for details.");
             }

@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 
+const BACKEND_URL = 'http://localhost:3001'; 
+
 const Login = () => {
     const [userId, setUserId] = useState('');
     const [password, setPassword] = useState('');
@@ -11,17 +13,29 @@ const Login = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        axios.post('http://localhost:3001/login', { userId, password })
+        console.log("Frontend Login: Attempting to send:", { userId, password });
+
+        axios.post(`${BACKEND_URL}/login`, { userId, password }) 
             .then(result => {
-                console.log(result);
-                if (result.data === "Success") {
+                console.log("Frontend Login: Backend response:", result);
+                if (result.data === "Login successful.") {
                     alert('Login successful!');
                     navigate('/admin');
                 } else {
-                    alert('Incorrect User ID or Password! Please try again.');
+                    alert('Login failed: Unexpected response from server. Please try again.');
                 }
             })
-            .catch(err => console.log("Login error:", err));
+            .catch(err => {
+                console.error("Login error:", err); 
+                if (err.response && err.response.status === 400) {
+                    alert(err.response.data || 'Invalid credentials. Please try again.');
+                } else if (err.response && err.response.data) {
+                    // Catch other backend error messages
+                    alert(`Login failed: ${err.response.data}`);
+                } else {
+                    alert("Login failed. Check console for details.");
+                }
+            });
     };
 
     return (
@@ -39,6 +53,7 @@ const Login = () => {
                                 placeholder="Enter User ID"
                                 className="form-control"
                                 id="inputUserId"
+                                value={userId} 
                                 onChange={e => setUserId(e.target.value)}
                                 required
                             />
@@ -52,6 +67,7 @@ const Login = () => {
                                 placeholder="Enter Password"
                                 className="form-control"
                                 id="inputPassword"
+                                value={password} 
                                 onChange={e => setPassword(e.target.value)}
                                 required
                             />
