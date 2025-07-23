@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import axios from 'axios';
 
-const BACKEND_URL = 'http://localhost:3001'; 
-
+const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:3001';
 const Admin = () => {
   const [orders, setOrders] = useState([]);
   const [message, setMessage] = useState(''); 

@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:3001';
+
 const Register = () => {
     const [userId, setUserId] = useState('');
     const [password, setPassword] = useState('');
@@ -11,7 +13,7 @@ const Register = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        axios.post('http://localhost:3001/register', { userId, password })
+        axios.post(`${BACKEND_URL}/register`, { userId, password })
             .then(result => {
                 console.log(result);
                 alert("Registered successfully! Directing to login.");

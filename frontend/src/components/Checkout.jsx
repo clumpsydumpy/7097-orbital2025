@@ -11,7 +11,7 @@ import { enUS } from 'date-fns/locale';
 
 const stripePromise = loadStripe('pk_test_51Rl2ga01aNNsvDc0Qn2HIFq0draBRCGBDzbppsR5yAw2hOHWUZqWkDFdoIUBbjQgIGbULMfQ4NkuPtKkoeCoNtpv00Fwv9lzlY'); //STRIPE PUBLISHABLE KEY
 
-const BACKEND_URL = 'http://localhost:3001';
+const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:3001';
 
 const Checkout = () => {
     const [cartItems, setCartItems] = useState([]);
