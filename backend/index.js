@@ -417,6 +417,6 @@ app.post('/api/stripe/create-checkout-session', async (req, res) => {
 });
 
 
-app.listen(PORT, () => {
-    console.log(`Server listening on http://127.0.0.1:${PORT}`);
-});
+// app.listen(PORT, () => {
+//     console.log(`Server listening on http://127.0.0.1:${PORT}`);
+// });
