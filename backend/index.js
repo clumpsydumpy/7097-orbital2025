@@ -14,6 +14,7 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 const MONGO_URI = process.env.MONGO_URI;
 
+
 // Stripe configuration
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET;
@@ -21,6 +22,12 @@ const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET;
 console.log('FRONTEND_URL from .env:', process.env.FRONTEND_URL);
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
 console.log('FRONTEND_URL used in app:', FRONTEND_URL);
+
+// for cross-origin requests from  Vercel frontend.
+app.use(cors({
+    origin: FRONTEND_URL, 
+    credentials: true, 
+}));
 
 app.use(express.static('public'));
 
