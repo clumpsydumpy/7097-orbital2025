@@ -12,7 +12,7 @@ const bcrypt = require('bcryptjs');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/orb_ecommerce';
+const MONGO_URI = process.env.MONGO_URI;
 
 // Stripe configuration
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
