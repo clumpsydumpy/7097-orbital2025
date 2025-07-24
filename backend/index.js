@@ -24,10 +24,7 @@ const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
 console.log('FRONTEND_URL used in app:', FRONTEND_URL);
 
 // for cross-origin requests from  Vercel frontend.
-app.use(cors({
-    origin: FRONTEND_URL, 
-    credentials: true, 
-}));
+app.use(cors());
 
 app.use(express.static('public'));
 
