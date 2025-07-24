@@ -4,26 +4,23 @@ const cors = require('cors');
 const express = require('express');
 const mongoose = require('mongoose');
 const axios = require('axios');
-const FormDataModel = require('./models/Formdata');
+const FormDataModel = require('./models/Formdata'); 
 const ProductModel = require('./models/Product');
 const OrderModel = require('./models/Order');
 const EventModel = require('./models/Event');
 const bcrypt = require('bcryptjs');
 
 const app = express();
-
-
+const PORT = process.env.PORT || 3001;
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/orb_ecommerce';
 
-
+// Stripe configuration
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET;
-
 
 console.log('FRONTEND_URL from .env:', process.env.FRONTEND_URL);
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
 console.log('FRONTEND_URL used in app:', FRONTEND_URL);
-
 
 app.use(express.static('public'));
 
@@ -58,6 +55,7 @@ mongoose.connect(
 .catch(err => console.error("MongoDB connection error:", err));
 
 
+// Stripe Webhook Endpoint- raw body parser applied  here for integrity of webhook
 app.post('/api/stripe/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
     const sig = req.headers['stripe-signature'];
     let event;
@@ -122,14 +120,15 @@ app.post('/api/stripe/webhook', express.raw({ type: 'application/json' }), async
     res.status(200).send('Webhook received.');
 });
 
-
+// Middleware to parse JSON bodies
 app.use(express.json());
 app.use(cors());
 
-
+// User Authentication route w FormDataModel
 app.post('/register', async (req, res) => {
     const { userId, password } = req.body; 
     try {
+        // Check if  record already exists- FormDataModel is singleton
         const existingFormData = await FormDataModel.findById('singleton');
         if (existingFormData) {
             return res.status(409).json("Registration already exists. Only one registration is allowed.");
@@ -158,6 +157,7 @@ app.post('/login', async (req, res) => {
             return res.status(400).json("No registration found. Please register first.");
         }
 
+        // Compare the provided password with hashed password from FormDataModel
         console.log(`  Comparing plain password '${password}' with stored hash '${formData.password}'`);
         const isMatch = await bcrypt.compare(password, formData.password);
         console.log("  bcrypt.compare result (isMatch):", isMatch);
@@ -170,6 +170,7 @@ app.post('/login', async (req, res) => {
             return res.status(400).json("Invalid credentials (Password mismatch).");
         }
 
+        // If both userId and password match
         if (formData.userId !== userId) { 
             console.log("  Login failed: Invalid credentials (User ID mismatch after password match).");
             return res.status(400).json("Invalid credentials (User ID mismatch).");
@@ -241,7 +242,7 @@ app.post('/orders', async (req, res) => {
 
 app.get('/orders', async (req, res) => {
     try {
-        const orders = await OrderModel.find({});
+        const orders = await OrderModel.find({}).sort({ orderDate: -1 });
         res.json(orders);
     } catch (err) {
         console.error("Error fetching orders:", err);
@@ -357,7 +358,7 @@ app.get('/api/upcoming-event', async (req, res) => {
     }
 });
 
-
+// Stripe Payment Routes
 app.post('/api/stripe/create-checkout-session', async (req, res) => {
     const { orderId, items, customerDetails } = req.body;
 
@@ -416,4 +417,6 @@ app.post('/api/stripe/create-checkout-session', async (req, res) => {
 });
 
 
-module.exports = app;
+app.listen(PORT, () => {
+    console.log(`Server listening on http://127.0.0.1:${PORT}`);
+});
