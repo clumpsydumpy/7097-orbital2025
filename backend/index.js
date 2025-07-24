@@ -126,7 +126,6 @@ app.post('/api/stripe/webhook', express.raw({ type: 'application/json' }), async
 
 // Middleware to parse JSON bodies
 app.use(express.json());
-app.use(cors());
 
 // User Authentication route w FormDataModel
 app.post('/register', async (req, res) => {
@@ -421,6 +420,6 @@ app.post('/api/stripe/create-checkout-session', async (req, res) => {
 });
 
 
-app.listen(PORT, () => {
-    console.log(`Server listening on http://127.0.0.1:${PORT}`);
-});
+// app.listen(PORT, () => {
+//     console.log(`Server listening on http://127.0.0.1:${PORT}`);
+// });
