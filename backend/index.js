@@ -29,9 +29,11 @@ app.use(express.static('public'));
 const corsOptions = {
   origin: FRONTEND_URL,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true, // Allow cookies to be sent
-  optionsSuccessStatus: 204
+  credentials: true,
+  optionsSuccessStatus: 204 
 };
+app.use(cors(corsOptions)); 
+
 
 // Middleware to parse JSON bodies
 app.use(express.json());
