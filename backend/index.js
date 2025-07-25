@@ -23,10 +23,19 @@ console.log('FRONTEND_URL from .env:', process.env.FRONTEND_URL);
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
 console.log('FRONTEND_URL used in app:', FRONTEND_URL);
 
-// for cross-origin requests from  Vercel frontend.
-app.use(cors());
-
 app.use(express.static('public'));
+
+// for cross-origin requests from  Vercel frontend.
+const corsOptions = {
+  origin: FRONTEND_URL,
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true, // Allow cookies to be sent
+  optionsSuccessStatus: 204
+};
+
+// Middleware to parse JSON bodies
+app.use(express.json());
+
 
 mongoose.connect(
     MONGO_URI,
@@ -124,8 +133,7 @@ app.post('/api/stripe/webhook', express.raw({ type: 'application/json' }), async
     res.status(200).send('Webhook received.');
 });
 
-// Middleware to parse JSON bodies
-app.use(express.json());
+
 
 // User Authentication route w FormDataModel
 app.post('/register', async (req, res) => {
