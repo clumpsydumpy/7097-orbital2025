@@ -29,11 +29,12 @@ app.use(express.static('public'));
 const corsOptions = {
   origin: FRONTEND_URL,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true,
-  optionsSuccessStatus: 204 
+  credentials: true, // Allow cookies to be sent
+  optionsSuccessStatus: 204
 };
-app.use(cors(corsOptions)); 
 
+// Apply CORS middleware
+app.use(cors(corsOptions)); 
 
 // Middleware to parse JSON bodies
 app.use(express.json());
@@ -138,7 +139,7 @@ app.post('/api/stripe/webhook', express.raw({ type: 'application/json' }), async
 
 
 // User Authentication route w FormDataModel
-app.post('/register', async (req, res) => {
+app.post('/api/register', async (req, res) => {
     const { userId, password } = req.body; 
     try {
         // Check if  record already exists- FormDataModel is singleton
@@ -157,7 +158,7 @@ app.post('/register', async (req, res) => {
     }
 });
 
-app.post('/login', async (req, res) => {
+app.post('/api/login', async (req, res) => {
     const { userId, password } = req.body; 
 
 
@@ -198,7 +199,7 @@ app.post('/login', async (req, res) => {
 });
 
 
-app.get('/products', async (req, res) => {
+app.get('/api/products', async (req, res) => {
     try {
         const products = await ProductModel.find({});
         res.json(products);
@@ -209,7 +210,7 @@ app.get('/products', async (req, res) => {
 });
 
 
-app.post('/orders', async (req, res) => {
+app.post('/api/orders', async (req, res) => {
     const { firstName, lastName, telegramId, address, items, requiredDate, isImmediate } = req.body;
 
     try {
@@ -253,7 +254,7 @@ app.post('/orders', async (req, res) => {
     }
 });
 
-app.get('/orders', async (req, res) => {
+app.get('/api/orders', async (req, res) => {
     try {
         const orders = await OrderModel.find({}).sort({ orderDate: -1 });
         res.json(orders);
@@ -263,7 +264,7 @@ app.get('/orders', async (req, res) => {
     }
 });
 
-app.get('/orders/:id', async (req, res) => {
+app.get('/api/orders/:id', async (req, res) => {
     try {
         const order = await OrderModel.findById(req.params.id);
         if (!order) {
@@ -276,7 +277,7 @@ app.get('/orders/:id', async (req, res) => {
     }
 });
 
-app.put('/orders/:id/status', async (req, res) => {
+app.put('/api/orders/:id/status', async (req, res) => {
     const { status } = req.body;
 
     if (!['Order Received', 'Prepared', 'On Its Way', 'Delivered', 'Cancelled', 'Payment Pending', 'Payment Failed'].includes(status)) {
@@ -299,7 +300,7 @@ app.put('/orders/:id/status', async (req, res) => {
     }
 });
 
-app.put('/orders/:id/cancel', async (req, res) => {
+app.put('/api/orders/:id/cancel', async (req, res) => {
     try {
         const order = await OrderModel.findById(req.params.id);
 
@@ -430,4 +431,3 @@ app.post('/api/stripe/create-checkout-session', async (req, res) => {
 });
 
 module.exports = app;
-
