@@ -20,7 +20,7 @@ const Home = () => {
         console.error("Error fetching products:", error);
       });
 
-    axios.get(`${BACKEND_URL}/api/upcoming-event`)
+    axios.get(`${BACKEND_URL}/upcoming-event`)
       .then(response => {
         setUpcomingEvent(response.data);
       })

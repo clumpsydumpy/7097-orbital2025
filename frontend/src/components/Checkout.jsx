@@ -73,7 +73,7 @@ const Checkout = () => {
             const orderCreationResponse = await axios.post(`${BACKEND_URL}/orders`, orderDetails);
             const newOrderId = orderCreationResponse.data._id;
 
-            const stripeSessionResponse = await axios.post(`${BACKEND_URL}/api/stripe/create-checkout-session`, {
+            const stripeSessionResponse = await axios.post(`${BACKEND_URL}/stripe/create-checkout-session`, {
                 orderId: newOrderId,
                 items: orderDetails.items,
                 customerDetails: {
