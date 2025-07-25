@@ -4,6 +4,8 @@ import axios from 'axios';
 
 const BACKEND_URL = (import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001') + '/api';
 
+const STATIC_ASSETS_BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
+
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [orderIdToTrack, setOrderIdToTrack] = useState('');
@@ -108,7 +110,7 @@ const Home = () => {
           {products.map(product => (
             <div key={product._id} className="card" style={{ width: '300px', marginBottom: '20px' }}>
               <img
-                src={`${BACKEND_URL}${product.imageUrl}`}
+                src={`${STATIC_ASSETS_BASE_URL}${product.imageUrl}`}
                 className="card-img-top"
                 alt={product.name}
                 style={{ height: '200px', objectFit: 'cover' }}
